@@ -30,6 +30,7 @@ load_dotenv()
 MAX_CONTEXT_CHUNKS = 4  # Increased number of chunks per source
 API_KEY = os.getenv("API_KEY")  # Get API key from environment variable
 openai.api_key = API_KEY
+print(API_KEY)
 
 # Models
 class QueryRequest(BaseModel):
