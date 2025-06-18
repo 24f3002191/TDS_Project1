@@ -16,7 +16,6 @@ from fastapi.responses import JSONResponse
 import uvicorn
 import traceback
 from dotenv import load_dotenv
-import openai
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -29,8 +28,6 @@ MAX_RESULTS = 10  # Increased to get more context
 load_dotenv()
 MAX_CONTEXT_CHUNKS = 4  # Increased number of chunks per source
 API_KEY = os.getenv("API_KEY")  # Get API key from environment variable
-openai.api_key = API_KEY
-print(API_KEY)
 
 # Models
 class QueryRequest(BaseModel):
@@ -151,7 +148,7 @@ async def get_embedding(text, max_retries=3):
             # Call the embedding API through aipipe proxy
             url = "https://aipipe.org/openai/v1/embeddings"
             headers = {
-                "Authorization": f"Bearer {API_KEY}",
+                "Authorization": API_KEY,
                 "Content-Type": "application/json"
             }
             payload = {
@@ -431,7 +428,7 @@ async def generate_answer(question, relevant_results, max_retries=2):
             # Call OpenAI API through aipipe proxy
             url = "https://aipipe.org/openai/v1/chat/completions"
             headers = {
-                "Authorization": f"Bearer {API_KEY}",
+                "Authorization": API_KEY,
                 "Content-Type": "application/json"
             }
             payload = {
@@ -485,7 +482,7 @@ async def process_multimodal_query(question, image_base64):
         # Call the GPT-4o Vision API to process the image and question
         url = "https://aipipe.org/openai/v1/chat/completions"
         headers = {
-            "Authorization": f"Bearer {API_KEY}",
+            "Authorization": API_KEY,
             "Content-Type": "application/json"
         }
         
